@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import PhotoCard from './components/ImageCard'
 
 function App() {
-  const photoObjects = [
+
+  const [photoInfo, setPhotoInfo] = useState([
     {
       id: 'brown-rock-formations-under-white-sky-at-daytime-mC1qftGwYtE',
       description: 'Rock Formation'
@@ -18,7 +19,7 @@ function App() {
     },
     {
       id: 'a-group-of-people-riding-camels-in-front-of-a-pyramid--LIYZ8fAaHM',
-      description: 'Pyramids'
+      description: 'Pyramid'
     },
     {
       id: 'a-person-standing-at-the-entrance-to-a-cave-kXbit_yx8t4',
@@ -28,19 +29,30 @@ function App() {
       id: 'brown-camel-at-field-kdqFhe7I8ek',
       description: 'Camel'
     }
-  ]
-
-  const [photoIds, setPhotoIds] = useState([
-    'brown-rock-formations-under-white-sky-at-daytime-mC1qftGwYtE',
-    'antelope-canyon-EVZxXuOEk3w',
-    'j7B9qYyDdZY',
-    'a-group-of-people-riding-camels-in-front-of-a-pyramid--LIYZ8fAaHM',
-    'a-person-standing-at-the-entrance-to-a-cave-kXbit_yx8t4',
-    'brown-camel-at-field-kdqFhe7I8ek'
   ]);
 
-  const displayPhotos = photoIds.map(photo =>
-    <PhotoCard id={photo} key={photo} />)
+  useEffect(() => {
+    setPhotoInfo(shuffleArray(photoInfo));
+  }, []);
+
+  function shuffleArray(array) {
+    let shuffledArray = [...array];
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+    }
+    return shuffledArray;
+  }
+
+  // const displayPhotos = () => {
+  //   const shuffledPhotos = shuffleArray(photoInfo);
+
+  //   setPhotoInfo(shuffledPhotos);
+
+  //   return photoInfo.map(photo => (
+  //     <PhotoCard id={photo.id} key={photo.id} />
+  //   ));
+  // }
 
   return (
     <>
@@ -56,10 +68,22 @@ function App() {
         </div>
       </div>
       <div className="cardSectionContainer">
-        {displayPhotos};
+        {photoInfo.map(photo => (
+          <PhotoCard id={photo.id} key={photo.id} description={photo.description} />
+        ))}
       </div>
     </>
   )
 }
 
 export default App
+
+
+// const [photoIds, setPhotoIds] = useState([
+//   'brown-rock-formations-under-white-sky-at-daytime-mC1qftGwYtE',
+//   'antelope-canyon-EVZxXuOEk3w',
+//   'j7B9qYyDdZY',
+//   'a-group-of-people-riding-camels-in-front-of-a-pyramid--LIYZ8fAaHM',
+//   'a-person-standing-at-the-entrance-to-a-cave-kXbit_yx8t4',
+//   'brown-camel-at-field-kdqFhe7I8ek'
+// ]);

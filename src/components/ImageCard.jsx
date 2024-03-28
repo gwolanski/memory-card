@@ -1,8 +1,7 @@
-import { createApi } from 'unsplash-js';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default function PhotoCard({ id }) {
+export default function PhotoCard({ id, description }) {
     const [photo, setPhoto] = useState(null);
 
     useEffect(() => {
@@ -24,8 +23,8 @@ export default function PhotoCard({ id }) {
 
     return (
         <div className='cardContainer'>
-
             {photo && <img key={id} src={photo.urls.small} className='image' />}
+            {photo && <div className='imageText'>{description}</div>}
         </div>
     );
 }
