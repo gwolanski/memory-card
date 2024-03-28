@@ -45,7 +45,7 @@ function App() {
       endGame();
       alert('You win!');
     }
-  }, [currentScore])
+  }, [currentScore]);
 
   function shuffleArray(array) {
     let shuffledArray = [...array];
