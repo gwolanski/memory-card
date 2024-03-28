@@ -4,6 +4,11 @@ import PhotoCard from './components/ImageCard'
 
 function App() {
 
+  const [currentScore, setCurrentScore] = useState(0);
+  const [bestScore, setBestScore] = useState(0);
+
+  const [selectedPhotos, setSelectedPhotos] = useState([]);
+
   const [photoInfo, setPhotoInfo] = useState([
     {
       id: 'brown-rock-formations-under-white-sky-at-daytime-mC1qftGwYtE',
@@ -35,6 +40,13 @@ function App() {
     setPhotoInfo(shuffleArray(photoInfo));
   }, []);
 
+  useEffect(() => {
+    if (currentScore === 6) {
+      endGame();
+      alert('You win!');
+    }
+  }, [currentScore])
+
   function shuffleArray(array) {
     let shuffledArray = [...array];
     for (let i = shuffledArray.length - 1; i > 0; i--) {
@@ -44,32 +56,44 @@ function App() {
     return shuffledArray;
   }
 
-  // const displayPhotos = () => {
-  //   const shuffledPhotos = shuffleArray(photoInfo);
+  function handleSelect(description) {
+    if (selectedPhotos.includes(description)) {
+      endGame();
+      alert('You already chose this photo card. Game over!');
+      return;
+    }
+    setSelectedPhotos([...selectedPhotos, description]);
+    setCurrentScore(currentScore + 1);
+    setPhotoInfo(shuffleArray(photoInfo));
+  }
 
-  //   setPhotoInfo(shuffledPhotos);
-
-  //   return photoInfo.map(photo => (
-  //     <PhotoCard id={photo.id} key={photo.id} />
-  //   ));
-  // }
+  function endGame() {
+    if (currentScore > bestScore) {
+      setBestScore(currentScore);
+    }
+    setCurrentScore(0);
+    setSelectedPhotos([]);
+  }
 
   return (
     <>
       <h1>Desert Memory Card Game</h1>
+      <div className="gameDescription">Score points by clicking on an image card that you haven't previously selected.</div>
       <div className="scoreboardContainer">
         <div className="scoreContainer">
           <img className="scoreIcon" src="/vibrant-cactus.png" />
           <div className="scoreType">Current Score: </div>
+          <div className="score">{currentScore}</div>
         </div>
         <div className="scoreContainer">
           <img className="scoreIcon" src="/vibrant-cactus.png" />
           <div className="scoreType">Best Score: </div>
+          <div className="score">{bestScore}</div>
         </div>
       </div>
       <div className="cardSectionContainer">
         {photoInfo.map(photo => (
-          <PhotoCard id={photo.id} key={photo.id} description={photo.description} />
+          <PhotoCard id={photo.id} key={photo.id} description={photo.description} onClick={handleSelect} />
         ))}
       </div>
     </>
@@ -77,13 +101,3 @@ function App() {
 }
 
 export default App
-
-
-// const [photoIds, setPhotoIds] = useState([
-//   'brown-rock-formations-under-white-sky-at-daytime-mC1qftGwYtE',
-//   'antelope-canyon-EVZxXuOEk3w',
-//   'j7B9qYyDdZY',
-//   'a-group-of-people-riding-camels-in-front-of-a-pyramid--LIYZ8fAaHM',
-//   'a-person-standing-at-the-entrance-to-a-cave-kXbit_yx8t4',
-//   'brown-camel-at-field-kdqFhe7I8ek'
-// ]);

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default function PhotoCard({ id, description }) {
+export default function PhotoCard({ id, description, onClick }) {
     const [photo, setPhoto] = useState(null);
 
     useEffect(() => {
@@ -22,7 +22,7 @@ export default function PhotoCard({ id, description }) {
     }, [id]);
 
     return (
-        <div className='cardContainer'>
+        <div className='cardContainer' onClick={() => onClick(description)}>
             {photo && <img key={id} src={photo.urls.small} className='image' />}
             {photo && <div className='imageText'>{description}</div>}
         </div>
